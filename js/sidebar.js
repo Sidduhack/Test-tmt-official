@@ -22,8 +22,8 @@ export async function initShell() {
   }
 
   const [sidebarHtml, navbarHtml] = await Promise.all([
-    fetch('/admin/components/sidebar.html').then(r => r.text()),
-    fetch('/admin/components/navbar.html').then(r => r.text())
+    fetch('/components/sidebar.html').then(r => r.text()),
+    fetch('/components/navbar.html').then(r => r.text())
   ]);
 
   sidebarSlot.innerHTML = sidebarHtml;
