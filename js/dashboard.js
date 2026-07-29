@@ -9,7 +9,7 @@ import { formatNumber, timeAgo, escapeHTML } from './utils.js';
 import { refreshIcons } from './ui.js';
 import { toast } from './notifications.js';
 import { setFeedbackBadge, setPageSearchPlaceholder } from './sidebar.js';
-
+import settings from "./settings.js";
 import * as VideosModule from './videos.js';
 import * as SubscribersModule from './subscribers.js';
 import * as FeedbackModule from './feedback.js';
