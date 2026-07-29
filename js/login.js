@@ -8,7 +8,7 @@ const button = document.getElementById("loginBtn");
 
 const next =
   new URLSearchParams(window.location.search).get("next") ||
-  "/admin/index.html";
+  "/index.html";
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
