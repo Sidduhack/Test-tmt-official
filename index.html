@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TMT OFFICIAL Admin</title>
+
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/forms.css">
+<link rel="stylesheet" href="css/tables.css">
+<link rel="stylesheet" href="css/modal.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="layout">
+
+    <aside id="sidebar-slot"></aside>
+
+    <div class="main">
+
+        <header id="navbar-slot"></header>
+
+        <main id="content">
+            <div class="loading-screen">Loading Dashboard...</div>
+        </main>
+
+    </div>
+
+</div>
+
+<script type="module">
+import { guardPage } from "./js/auth.js";
+import { initShell } from "./js/sidebar.js";
+import { startRouter } from "./js/dashboard.js";
+
+const status = document.querySelector(".loading-screen");
+
+try {
+    status.textContent = "1. Checking login...";
+    await guardPage();
+
+    status.textContent = "2. Loading sidebar...";
+    await initShell();
+
+    status.textContent = "3. Starting router...";
+    startRouter();
+
+    status.textContent = "4. Dashboard loaded!";
+} catch (e) {
+    console.error(e);
+    document.body.innerHTML = `
+        <pre style="padding:20px;color:red;white-space:pre-wrap;">
+${e.stack || e}
+        </pre>
+    `;
+}
+</script>
+</body>
+</html>
