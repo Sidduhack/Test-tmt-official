@@ -86,7 +86,7 @@ form?.addEventListener('submit', async (e) => {
 function redirectAfterLogin() {
   const params = new URLSearchParams(location.search);
   const next = params.get('next');
-  location.href = next && next.startsWith('/') ? next : '/index.html';
+  location.href = next && next.startsWith('.') ? next : '/index.html';
 }
 
 function showError(msg) {
