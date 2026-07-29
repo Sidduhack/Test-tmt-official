@@ -1,80 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TMT OFFICIAL Admin</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TMT OFFICIAL · Admin Panel</title>
+<meta name="robots" content="noindex, nofollow" />
 
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/dashboard.css">
-<link rel="stylesheet" href="css/forms.css">
-<link rel="stylesheet" href="css/tables.css">
-<link rel="stylesheet" href="css/modal.css">
-<link rel="stylesheet" href="css/responsive.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/dashboard.css" />
+<link rel="stylesheet" href="css/tables.css" />
+<link rel="stylesheet" href="css/forms.css" />
+<link rel="stylesheet" href="css/modal.css" />
+<link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
 
-<div class="layout">
+<div class="page-loader" id="page-loader"><span class="spinner"></span></div>
 
-    <aside id="sidebar-slot"></aside>
+<div class="app-shell hidden" id="app-shell">
+  <div id="sidebar-slot"></div>
 
-    <div class="main">
-
-        <header id="navbar-slot"></header>
-
-        <main id="content">
-            <div class="loading-screen">Loading Dashboard...</div>
-        </main>
-
-    </div>
-
+  <div class="main-area" id="main-area">
+    <div id="navbar-slot"></div>
+    <main class="content" id="content"></main>
+  </div>
 </div>
 
+<div id="toast-container"></div>
+
+<!-- Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<!-- Charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+
 <script type="module">
-import { guardPage } from "./js/auth.js";
-import { initShell } from "./js/sidebar.js";
-import { startRouter } from "./js/dashboard.js";
+  import { guardPage } from './js/auth.js';
+  import { initShell } from './js/sidebar.js';
+  import { startRouter } from './js/dashboard.js';
+  import { toast } from './js/notifications.js';
 
-const loading = document.querySelector(".loading-screen");
+  (async function bootstrap() {
+    const user = await guardPage();
+    if (!user) return; // guardPage already redirected to login.html
 
-(async () => {
-  try {
-    loading.textContent = "Step 1: guardPage";
-    await guardPage();
-
-    loading.textContent = "Step 2: initShell";
     await initShell();
-
-    loading.textContent = "Step 3: startRouter";
     startRouter();
 
-    loading.textContent = "Dashboard Loaded";
-  } catch (e) {
-    document.body.innerHTML =
-      "<pre style='padding:20px;color:#ff5555;white-space:pre-wrap'>" +
-      (e.stack || e.message || e) +
-      "</pre>";
-  }
-})();
-window.onerror = (msg, src, line, col, err) => {
-  document.body.innerHTML = `
-    <pre style="color:red;padding:20px;white-space:pre-wrap">
-${msg}
+    window.addEventListener('tmt:toast-info', (e) => {
+      toast.info(e.detail.title, e.detail.message);
+    });
 
-${err?.stack || ""}
-    </pre>
-  `;
-};
-
-window.onunhandledrejection = (e) => {
-  document.body.innerHTML = `
-    <pre style="color:red;padding:20px;white-space:pre-wrap">
-${e.reason?.stack || e.reason}
-    </pre>
-  `;
-};
+    document.getElementById('page-loader')?.remove();
+    document.getElementById('app-shell').classList.remove('hidden');
+  })();
 </script>
 </body>
 </html>
